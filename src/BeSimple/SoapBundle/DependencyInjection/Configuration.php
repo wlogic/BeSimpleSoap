@@ -14,6 +14,7 @@ namespace BeSimple\SoapBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * WebServiceExtension configuration structure.
@@ -21,10 +22,32 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  * @author Christian Kerl <christian-kerl@web.de>
  * @author Francis Besset <francis.besset@gmail.com>
  */
-class Configuration
+class Configuration implements ConfigurationInterface
 {
     private $cacheTypes = array('none', 'disk', 'memory', 'disk_memory');
     private $proxyAuth = array('basic', 'ntlm');
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigTreeBuilder()
+    {
+        $treeBuilder = new TreeBuilder('BeSimpleSoapBundle');
+        $rootNode = $treeBuilder->getRootNode('be_simple_soap');
+
+        $this->addCacheSection($rootNode);
+        $this->addClientSection($rootNode);
+        $this->addServicesSection($rootNode);
+        $this->addWsdlDumperSection($rootNode);
+
+        $rootNode->children()
+            ->scalarNode('exception_controller')
+            ->defaultValue('BeSimpleSoapBundle:SoapWebService:exception')
+            ->end()
+            ->end();
+
+        return $treeBuilder;
+    }
 
     /**
      * Generates the configuration tree.
@@ -33,21 +56,7 @@ class Configuration
      */
     public function getConfigTree()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('be_simple_soap');
-
-        $this->addCacheSection($rootNode);
-        $this->addClientSection($rootNode);
-        $this->addServicesSection($rootNode);
-        $this->addWsdlDumperSection($rootNode);
-
-        $rootNode
-            ->children()
-                ->scalarNode('exception_controller')->defaultValue('BeSimpleSoapBundle:SoapWebService:exception')->end()
-            ->end()
-        ;
-
-        return $treeBuilder->buildTree();
+        return $this->getConfigTreeBuilder()->buildTree();
     }
 
     private function addCacheSection(ArrayNodeDefinition $rootNode)
