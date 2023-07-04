@@ -24,15 +24,15 @@ use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Log\DebugLoggerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @author Christian Kerl <christian-kerl@web.de>
  * @author Francis Besset <francis.besset@gmail.com>
  */
 
-class SoapWebServiceController extends Controller
+class SoapWebServiceController extends AbstractController
 {
-    use ContainerAwareTrait;
     /**
      * @var \SoapServer
      */
@@ -122,12 +122,12 @@ class SoapWebServiceController extends Controller
     public function exceptionAction(Request $request, FlattenException $exception, DebugLoggerInterface $logger = null)
     {
         if (!$webservice = $request->query->get('_besimple_soap_webservice')) {
-            throw new \LogicException(sprintf('The parameter "%s" is required in Request::$query parameter bag to generate the SoapFault.', '_besimple_soap_webservice'), null, $e);
+            throw new \LogicException(sprintf('The parameter "%s" is required in Request::$query parameter bag to generate the SoapFault.', '_besimple_soap_webservice'), null, $exception);
         }
 
-        $view = 'TwigBundle:Exception:'.($this->container->get('kernel')->isDebug() ? 'exception' : 'error').'.txt.twig';
+        $view = '@Twig/Exception/'.($this->container->get('kernel')->isDebug() ? 'exception' : 'error').'.txt.twig';
         $code = $exception->getStatusCode();
-        $details = $this->container->get('templating')->render($view, array(
+        $details = $this->container->get('twig')->render($view, array(
             'status_code' => $code,
             'status_text' => isset(Response::$statusTexts[$code]) ? Response::$statusTexts[$code] : '',
             'exception'   => $exception,
