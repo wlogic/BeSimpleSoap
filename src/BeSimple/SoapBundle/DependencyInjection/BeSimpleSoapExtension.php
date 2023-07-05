@@ -49,7 +49,7 @@ class BeSimpleSoapExtension extends Extension
         $processor = new Processor();
         $configuration = new Configuration();
 
-        $config = $processor->process($configuration->getConfigTree()->buildTree(), $configs);
+        $config = $processor->process($configuration->getConfigTreeBuilder()->buildTree(), $configs);
 
         $this->registerCacheConfiguration($config['cache'], $container, $loader);
 

@@ -27,12 +27,7 @@ class Configuration implements ConfigurationInterface
     private $cacheTypes = array('none', 'disk', 'memory', 'disk_memory');
     private $proxyAuth = array('basic', 'ntlm');
 
-    /**
-     * Generates the configuration tree.
-     *
-     * @return \Symfony\Component\Config\Definition\ArrayNode The config tree
-     */
-    public function getConfigTree(): TreeBuilder
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('be_simple_soap');
         $rootNode = $treeBuilder->getRootNode();
@@ -48,7 +43,7 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-        return $treeBuilder->buildTree();
+        return $treeBuilder;
     }
 
     private function addCacheSection(ArrayNodeDefinition $rootNode)
