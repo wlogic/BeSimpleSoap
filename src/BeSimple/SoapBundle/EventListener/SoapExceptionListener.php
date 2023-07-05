@@ -15,6 +15,7 @@ namespace BeSimple\SoapBundle\EventListener;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\EventListener\ExceptionListener;
+use Symfony\Component\HttpKernel\EventListener\ErrorListener;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 /**
  * @author Francis Besset <francis.besset@gmail.com>
  */
-class SoapExceptionListener extends ExceptionListener
+class SoapExceptionListener extends ErrorListener
 {
     /**
      * @var ContainerInterface
@@ -68,7 +69,7 @@ class SoapExceptionListener extends ExceptionListener
         // hack to retrieve the current WebService name in the controller
         $request->query->set('_besimple_soap_webservice', $webservice);
 
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         if ($exception instanceof \SoapFault) {
             $request->query->set('_besimple_soap_fault', $exception);
         }
