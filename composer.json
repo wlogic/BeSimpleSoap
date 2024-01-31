@@ -9,7 +9,7 @@
         "ext-curl": "*",
         "ass/xmlsecurity": "~1.0",
         "symfony/twig-bundle": ">=2.3",
-        "laminas/laminas-mime": "^2.7"
+        "laminas/laminas-mime": "^2.12"
     },
     "replace": {
         "besimple/soap-bundle": "self.version",
