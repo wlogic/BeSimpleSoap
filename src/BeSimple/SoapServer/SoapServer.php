@@ -64,7 +64,7 @@ class SoapServer extends \SoapServer
      *
      * @param string $request Request string
      */
-    public function handle($request = null)
+    public function handle(?string $request = null): void
     {
         // wrap request data in SoapRequest object
         $soapRequest = SoapRequest::create($request, $this->soapVersion);

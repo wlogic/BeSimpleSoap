@@ -61,12 +61,12 @@ class WebServiceContext
         return $this->serviceDefinition;
     }
 
-    public function getWsdlFileContent($endpoint = null)
+    public function getWsdlFileContent($endpoint = '')
     {
         return file_get_contents($this->getWsdlFile($endpoint));
     }
 
-    public function getWsdlFile($endpoint = null)
+    public function getWsdlFile($endpoint = '')
     {
         $file      = sprintf ('%s/%s.%s.wsdl', $this->options['cache_dir'], $this->options['name'], md5($endpoint));
         $cache = new ConfigCache($file, $this->options['debug']);

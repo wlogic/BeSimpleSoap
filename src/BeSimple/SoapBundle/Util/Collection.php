@@ -53,12 +53,12 @@ class Collection implements \IteratorAggregate, \Countable
         $this->elements = array();
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->elements);
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->elements);
     }
