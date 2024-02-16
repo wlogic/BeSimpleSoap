@@ -27,6 +27,8 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class WebServiceContext
 {
     private $options;
+    private LoaderInterface $loader;
+    private TypeConverterCollection $converters;
 
     private $serviceDefinition;
     private $serviceBinder;
